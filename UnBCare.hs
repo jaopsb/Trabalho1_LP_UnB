@@ -116,8 +116,7 @@ demandaMedicamentos r = [(m, length l) | (m, l) <- r]
  -}
 
 validaMedicamentosReceituario :: Receituario -> Bool
-validaMedicamentosReceituario r
-   | 
+validaMedicamentosReceituario r = undefined
 
 receituarioValido :: Receituario -> Bool
 receituarioValido = undefined
