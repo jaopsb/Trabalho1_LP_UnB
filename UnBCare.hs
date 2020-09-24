@@ -115,17 +115,28 @@ demandaMedicamentos r = [(m, length l) | (m, l) <- r]
 
  -}
 
-validaMedicamentosReceituario :: Receituario -> Bool
-validaMedicamentosReceituario r = undefined
+-- Valida a ordem dos elementos inseridos
+validaOrdemLista :: (Ord a) => [a] -> Bool
+validaOrdemLista [] = True -- Caso vazio retorna true para validar expressao
+validaOrdemLista [x] = True -- Caso apenas um elemento retorno True
+validaOrdemLista (x : y : xs) = x <= y && validaOrdemLista (y : xs) -- Caso generico, itero verificando se os valores em sequencia estao em ordem crescente
+-- Avalia uma lista de booleanos e retorna o objeto final
 
-receituarioValido :: Receituario -> Bool
-receituarioValido = undefined
-
-planoValido :: PlanoMedicamento -> Bool
-planoValido = undefined
+validaBoolLista :: [Bool] -> Bool
+validaBoolLista [] = True -- Caso vazio retorna True para facilitar a expressao
+validaBoolLista (l1 : l) = l1 && validaBoolLista l -- Caso generico itera gerando expressao booleana
 
 {-
+  Utilizo a validacao de ordem de lista para verificar se os medicamentos estao em ordem alfabetica
+  E se a lista de horarios para cada medicamento esta ordenada de forma crescente e se todas essas listas sao validas (True)
+-}
+receituarioValido :: Receituario -> Bool
+receituarioValido r = validaOrdemLista [m | (m, _) <- r] && validaBoolLista [validaOrdemLista l | (_, l) <- r]
 
+planoValido :: PlanoMedicamento -> Bool
+planoValido p = validaOrdemLista [h | (h, _) <- p] && validaBoolLista [validaOrdemLista l | (_, l) <- p]
+
+{-
    QUESTÃO 6  VALOR: 1,0 ponto,
 
  Um plantão é válido se, e somente se, todas as seguintes condições são satisfeitas:
@@ -138,8 +149,13 @@ planoValido = undefined
 
  -}
 
+validaOrdemCuidadoLista :: [Cuidado] -> Bool
+validaOrdemCuidadoLista (c1 : c2 : l) = undefined
+
 plantaoValido :: Plantao -> Bool
-plantaoValido = undefined
+plantaoValido p =
+  validaOrdemLista [h | (h, _) <- p]
+    && validaBoolLista [validaOrdemCuidadoLista l | (_, l) <- p]
 
 {-
    QUESTÃO 7  VALOR: 1,0 ponto
